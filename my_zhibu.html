@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>知乎 - 你的世界从此不同</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+			var code;//定义一个全局验证码
+			$(function(){
+				jcPublic.register();
+				jcPublic.Tab();
+				jcPublic.login();	
+				jcPublic.downLoad();
+				jcPublic.createCode();
+				jcPublic.clickCode();
+				$(".wrap>div>input").focus(function(){
+        			$(this).css({"outline": "none" });
+        			var $this = $(this);
+        			$this.next("label").removeClass("move")//隐藏提示信息
+    			})
+				
+				$(".other>span").on("click",function(){
+					$(this).parent().children("div").toggleClass("hidden");
+				})
+				
+			})
+			
+			
+			var jcPublic = {
+				register:function(){//注册
+					var currentThis = this//当前对象
+					$("#register").on("click",function(){
+						var $this = $(this);
+						var name = $("#name").val();//姓名
+						var phone = $("#phone").val();//电话
+						var passwor = $("#passwor").val();
+						var Code = $("#code").val();//验证码
+						var p_reg = /^0{0,1}(13[0-9]|15[0-9]|153|156|18[0-9])[0-9]{8}$/;//电话验证
+						if(name.length==0 && phone.length==0 && passwor.length==0){//同时为空
+							$this.prev(".wrap").find("label").addClass("move");
+							return false;
+						}else if(name == "" || name == "undefined" || name == "null"){
+							$this.prev(".wrap").find(".name").addClass("move");
+							return false;
+						}else if(phone == "" || phone == "undefined" || phone == "null"){
+							$this.prev(".wrap").find(".phone").addClass("move");
+							return false;
+						}else if(passwor == "" || passwor == "undefined" || passwor == null ){
+							$this.prev(".wrap").find(".passwor").addClass("move");
+							return false;
+						}else if(Code == "" || Code == "undefined" || Code == null ){
+							$this.prev(".wrap").find(".code").addClass("move");
+							return false;
+						}else if(code !== Code ){
+							$this.prev(".wrap").find(".code").html("验证码有误").addClass("move");
+							return currentThis.createCode();//验证码输入有误就刷新验证码重新输入
+						}else if(!p_reg.test(phone)){
+							$this.prev(".wrap").find(".restet").html("手机号码格式不正确").addClass("move");
+							return false;
+						}
+					})
+				},
+				Tab:function(){//切换注册和登录
+					$(".nav-sliders>a").on("click",function(){
+						$(this).addClass("active").siblings().removeClass("active");
+						var $width = $(this).width();//当前a的宽度
+						var $index = $(this).index();//索引
+						$(".on").stop(true,true).animate({"left":$width*$index+5+"px"},300);
+						$(this).parents(".index-body").children(".change").children().eq($index).stop(true,false).show().siblings().hide();
+					})
+				},
+				login:function(){
+					$("#login").on("click",function(){
+						var $this = $(this);
+						var phone = $("#login-phone").val();//电话
+						var passwor = $("#login-password").val();
+						var p_reg = /^0{0,1}(13[0-9]|15[0-9]|153|156|18[0-9])[0-9]{8}$/;//电话验证
+						if(phone.length==0 && passwor.length==0){//同时为空
+							$this.prev(".wrap").find("label").addClass("move");
+							return false;
+						}else if(phone == "" || phone == "undefined" || phone == "null"){
+							$this.prev(".wrap").find(".phone").addClass("move");
+							return false;
+						}else if(passwor == "" || passwor == "undefined" || passwor == null ){
+							$this.prev(".wrap").find(".passwor").addClass("move");
+							return false;
+						}else if(!p_reg.test(phone)){
+							$this.prev(".wrap").find(".restet").html("手机号码格式不正确").addClass("move");
+							return false;
+						}
+					})
+				},
+				downLoad:function(){
+					$(".download").on("click",function(){
+						$(this).children(".pic").toggle(300);
+					})
+				},
+				createCode:function(){//验证码
+						var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');//所有候选组成验证码的字符，也可以用中文的 
+						code="";
+						var codeLength=4;//验证码的长度
+						for(var i =0;i<codeLength;i++){
+							var index = Math.floor(Math.random()*selectChar.length)//随机数
+							code +=selectChar[index];
+							//$("#createCade").html(code)
+						}
+						return $("#createCade").html(code)
+						
+					
+				},
+				clickCode:function(){//切换验证码
+					var $this = this;
+					$("#createCade").on("click",function(){
+						return $this.createCode();
+					})
+				}
+			}
+	</script>
+</head>
+<body>
+    <div class="index-box">
+    	<div class="index-header">
+    		<h1 class="logo"></h1>
+    		<h2 class="title">与世界分享你的只是、经验与见解</h2>
+    	</div>
+
+    	<div class="index-body">
+    		<div class="nav-sliders">
+    			<a class="registered active">注册</a>
+    			<a class="login">登录</a>
+    			<span class="on"></span>
+    		</div>
+
+    		<div class="change">
+    			<!--开始注册-->
+    			<div class="registered-box">
+	    			<div class="warp">
+	    				<div class="phone">
+	    					<input type="text" name="" value="" id="name" placeholder="姓名">
+	    					<label class="error name">请输入姓名</label>
+	    				</div>
+	    				<div class="password">
+	    					<input type="text" name="" value="" id="phone" placeholder="手机号">
+	    					<label class="error phone restet">请输入手机号</label>
+	    				</div>
+	    				<div class="password">
+	    					<input type="password" name="" id="passwor" maxlength="6" value="" placeholder="请输入密码">
+	    					<label class="error passwor">请输入密码</label>
+	    				</div>
+	    				<div class="password">
+	    					<input type="text" name="" value="" id="code" maxlength="6" placeholder="验证码">
+	    					<label class="error passwor code">请输入验证码</label>
+	                        <div class="verification-code" id="createCade"></div>
+	    				</div>
+	    		    </div>
+		    		<div class="button" id="register">注册</div>
+		    		<div class="text">点击「注册」按钮，即代表你同意<a href="/terms" target="_blank">《知乎协议》</a></div>
+		    		<div class="download">
+		    			<span>下载知乎</span>
+		    			<span class="close">关闭二维码</span>
+		    			<div class="pic"><img src="http://cdn.attach.w3cfuns.com/notes/pics/201609/23/161523a3ql34ba2offllfb.png"></div>
+		    		</div>
+    		</div>
+        <!--登录界面-->
+            <div class="login-box">
+            	<div class="warp">
+            		<div class="phone">
+            			<input type="text" name="" id="login-phone" value="" placeholder="手机或邮箱">
+            			<label class="error phone restet">请输入手机号</label>
+            		</div>
+            		<div class="password">
+            			<input type="password" name="" id="login-password" placeholder="密码" maxlength="6">
+            			<label class="error phone">请输入密码</label>
+            		</div>
+            	</div>
+            	<div class="button" id="login">登录</div>
+            	<div class="remember">
+            		<label><input type="checkox">记住我：</label>
+            		<a>无法登录？</a>
+            	</div>
+            	<div class="other">
+            		<span>社交帐号登录</span>
+            		<div class="other-login">
+            			<a href="#">QQ</a>
+            			<a href="#">WeCheat</a>
+            			<a href="#">WeiBo</a>
+            		</div>
+            	</div>
+            	<div class="download">
+            		<span>下载知乎app</span>
+            		<span class="close">关闭二维码</span>
+            		<div class="pic"><img src="http://cdn.attach.w3cfuns.com/notes/pics/201609/23/161523a3ql34ba2offllfb.png"></div>
+            	</div>
+            </div>
+    </div>
+</body>
+</html>
