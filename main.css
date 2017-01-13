@@ -16,7 +16,7 @@ a {
 }
 
 .logo {
-	background: url(http://cdn.attach.w3cfuns.com/notes/pics/201606/11/143905zj6ld3zm2yryw9jf.png) no-repeat;
+	background: url(https://static.zhihu.com/static/revved/img/index/logo.6837e927.png) no-repeat;
 	width: 160px;
     height: 74px;
     margin: 0 auto;
@@ -230,12 +230,12 @@ a {
 }
 
 .verification-code {
-	position: absolute;
-	right: 22px;
-	top: 14px;
-	font-family: "微软雅黑";
-	font-size: 18px;
-	cursor: pointer;
+    position: absolute;
+    right: 22px;
+    top: 14px;
+    font-family: "微软雅黑";
+    font-size: 18px;
+    cursor: pointer;
 }
 
 #register:hover {
